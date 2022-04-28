@@ -2,54 +2,51 @@
   <div :class="$style.app">
     <div :class="$style.appUser">
       <AppCard>
-        <AppUser v-if="user" :user="user" />
+        <AppUser/>
       </AppCard>
     </div>
     <div :class="$style.appContent">
       <AppCard>
-        <AppContent v-if="beer" :beer="beer"></AppContent>
+        <AppContent></AppContent>
       </AppCard>
     </div>
   </div>
 </template>
 
 <script>
-const axios = require('axios').default;
+import {
+  mapState,
+  mapActions,
+  mapMutations,
+} from 'vuex';
+import { store } from './store';
 
 import AppCard from './components/ui/AppCard.vue'
 import AppUser from './components/AppUser.vue'
 import AppContent from './components/AppContent.vue'
 
 export default {
+  store,
   name: 'App',
   components: {
     AppCard,
     AppUser,
     AppContent,
   },
-  data() {
-    return {
-      user: null,
-      beer: null
-    }
+  computed: {
+    ...mapState({
+      user: (state) => state.userModule.user,
+      beer: (state) => state.beerModule.beer,
+    }),
   },
   methods: {
-    async fetchUserData () {
-      try {
-        const userFetch = await axios.get('https://random-data-api.com/api/users/random_user')
-        this.user = userFetch?.data
-      } catch (error) {
-        console.error(error)
-      } 
-    },
-    async fetchBeerData () {
-      try {
-        const beerFetch = await axios.get('https://random-data-api.com/api/beer/random_beer')
-        this.beer = beerFetch?.data
-      } catch (error) {
-        console.error(error)
-      }
-    }
+    ...mapMutations({
+      setUserData: 'setUserData',
+    }),
+    ...mapActions({
+      fetchUserData: 'fetchUserData',
+      fetchBeerData: 'fetchBeerData',
+    }),
   },
   async mounted() {
     this.fetchUserData()

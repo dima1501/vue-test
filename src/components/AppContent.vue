@@ -1,17 +1,17 @@
 <template>
-    <div :class="$style.content">
+    <div v-if="getBeer" :class="$style.content">
         <div :class="$style.contentTitle">
             <AppTitle type='h2' title="Recommended beer"/>
         </div>
         <div :class="$style.contentSubTitle">
-            <AppTitle type='h3' :title="`${beer.brand} - ${beer.name}`"/>
+            <AppTitle type='h3' :title="`${getBeer?.brand} - ${getBeer?.name}`"/>
         </div>
         <div :class="$style.contentLine">
             <div :class="$style.contentLineLabel">
                 Sort of beer
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.style}}
+                {{getBeer?.style}}
             </div>
         </div>
         <div :class="$style.contentLine">
@@ -19,7 +19,7 @@
                 Hop
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.hop}}
+                {{getBeer?.hop}}
             </div>
         </div>
         <div :class="$style.contentLine">
@@ -27,7 +27,7 @@
                 Yeast
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.yeast}}
+                {{getBeer?.yeast}}
             </div>
         </div>
         <div :class="$style.contentLine">
@@ -35,7 +35,7 @@
                 Malts
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.malts}}
+                {{getBeer?.malts}}
             </div>
         </div>
         <div :class="$style.contentLine">
@@ -43,7 +43,7 @@
                 IBU
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.ibu}}
+                {{getBeer?.ibu}}
             </div>
         </div>
         <div :class="$style.contentLine">
@@ -51,7 +51,7 @@
                 Alcohol
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.alcohol}}
+                {{getBeer?.alcohol}}
             </div>
         </div>
         <div :class="$style.contentLine">
@@ -59,21 +59,32 @@
                 Blg
             </div>
             <div :class="$style.contentLineValue">
-                {{beer.blg}}
+                {{getBeer?.blg}}
             </div>
         </div>
     </div>
 </template>
 <script>
+import {
+  mapGetters,
+} from 'vuex';
+import { store } from '../store';
+
 import AppTitle from './ui/AppTitle.vue'
 
 export default {
+    store,
     name: 'AppContent',
     components: {
         AppTitle,
     },
     props: {
         beer: Object
+    },
+    computed: {
+        ...mapGetters([
+            'getBeer',
+        ]),
     }
 }
 </script>
